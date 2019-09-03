@@ -70,8 +70,10 @@ export default {
     msg: function(data) {
       console.log(data);
       let audio = document.querySelector("#playback");
-      audio.src = data;
-      audio.play();
+      if (this.url !== data) {
+        audio.src = data;
+        audio.play();
+      } 
     }
   },
   methods: {
