@@ -30,7 +30,7 @@ io.on('connection', (socket) => {
         var roster = io.sockets.clients(room.roomName);
         let x = [];
 
-        console.log("roster: " + roster);
+        console.log("roster: " + roster.toString());
 
         // roster.forEach(function (client) {
         //     x.push(client.name);
