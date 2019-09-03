@@ -59,12 +59,12 @@ export default {
       url: "11",
       name: localStorage.name,
       roomName: "",
-      usersInRoom: []
+      usersInRoom: [localStorage.name]
     };
   },
   sockets: {
     p: function(data) {
-      this.usersInRoom.push(data);
+      this.usersInRoom.push(data.call);
       console.log(data);
     },
     msg: function(data) {
