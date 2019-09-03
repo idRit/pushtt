@@ -5,7 +5,9 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <audio id="playback" src></audio>
-    <h3 id="callsign">{{name}}</h3>
+    <div class="csContainer">
+      <h3 id="callsign">Call Sign: {{name}}</h3>
+    </div>
 
     <div class="roomContainer">
       <input class="room" type="text" name id="roomName" placeholder="Room name" />
@@ -19,9 +21,9 @@
       </button>
     </div>
 
-    <div class="usersContainer">
+    <div class="usersContainer" style="align-items: center;justify-content: center;flex-direction: column;">
       <ul id="example-1">
-        <li v-for="user in usersInRoom" :key="user">{{ user }}</li>
+        <li v-for="user in usersInRoom" :key="user" style="color:#70416d;">{{ user }}</li>
       </ul>
       <button
         id="pushBtn"
@@ -128,14 +130,14 @@ export default {
           call: localStorage.name
         });
         document.querySelector(".roomContainer").style.display = "none";
-        document.querySelector(".usersContainer").style.display = "block";
+        document.querySelector(".usersContainer").style.display = "flex";
       }
     },
     exit(event) {
       this.$socket.emit("exit", {
         room: this.roomName
       });
-      document.querySelector(".roomContainer").style.display = "block";
+      document.querySelector(".roomContainer").style.display = "flex";
       document.querySelector(".usersContainer").style.display = "none";
     }
   },
@@ -238,6 +240,16 @@ export default {
 }
 .usersContainer {
   display: none;
+  align-items: center;
+  justify-content: center;
+}
+.csContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#callsign {
+  color:#70416d;
 }
 
 @media only screen and (max-width: 480px) {

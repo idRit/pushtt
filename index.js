@@ -57,28 +57,30 @@ io.on('connection', (socket) => {
     });
 
     socket.on('exit', (r) => {
-        listOfSocketNames.forEach((el, i) => {
-            if (socket.id === el.id) {
-                listOfSocketNames.splice(i, 1);
-            }
-        });
-
-        socket.leave(r.room);
-
-        let clients = io.sockets.adapter.rooms[r.room].sockets;
-
-        let names = [];
-        for (let clientId in clients) {
-            listOfSocketNames.forEach(name => {
-                if (clientId === name.id) {
-                    names.push(name.name);
+        if (listOfSocketNames < 0) {
+            listOfSocketNames.forEach((el, i) => {
+                if (socket.id === el.id) {
+                    listOfSocketNames.splice(i, 1);
                 }
-            })
-        }
-        console.log(names);
+            });
 
-        if (names.length !== 0){
-            io.sockets.in(r.room).emit('p', names);        
+            socket.leave(r.room);
+
+            let clients = io.sockets.adapter.rooms[r.room].sockets;
+            
+            let names = [];
+            for (let clientId in clients) {
+                listOfSocketNames.forEach(name => {
+                    if (clientId === name.id) {
+                        names.push(name.name);
+                    }
+                })
+            }
+            console.log(names);
+            
+            if (names.length !== 0) {
+                io.sockets.in(r.room).emit('p', names);
+            }
         }
     });
 
