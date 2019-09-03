@@ -88,7 +88,7 @@ export default {
         await that.recorder.getDataURL(async url => {
           //do stuff here
           //that.socket.broadcast(this.roomName).emit("msg", url);
-          console.log(that.socket);
+          console.log(that.$socket);
           that.$socket.emit("msg", {
             room: that.roomName,
             msg: url
