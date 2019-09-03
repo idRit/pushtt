@@ -59,7 +59,7 @@ export default {
       url: "11",
       name: localStorage.name,
       roomName: "",
-      usersInRoom: ["someone 1", "someone 2"]
+      usersInRoom: null
     };
   },
   sockets: {
@@ -67,7 +67,7 @@ export default {
       this.usersInRoom = data;
       console.log(data);
     },
-    i: function(data) {
+    msg: function(data) {
       console.log(data);
       let audio = document.querySelector("#playback");
       audio.src = data;
@@ -90,7 +90,7 @@ export default {
           //do stuff here
           //that.socket.broadcast(this.roomName).emit("msg", url);
           console.log(that.$socket);
-          that.$socket.emit("#msg", {
+          that.$socket.emit("msg", {
             room: that.roomName,
             msg: url
           });
