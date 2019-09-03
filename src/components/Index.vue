@@ -64,8 +64,8 @@ export default {
   },
   sockets: {
     p: function(data) {
-      this.usersInRoom = data;
       console.log(data);
+      this.usersInRoom = data;
     },
     msg: function(data) {
       console.log(data);

@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
             let clientSocket = io.sockets.connected[clientId];
             names.push(clientSocket.name);
         }
+        console.log(names);
 
         io.sockets.in(room.roomName).emit('p', names);
     });
