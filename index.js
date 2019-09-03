@@ -63,14 +63,12 @@ io.on('connection', (socket) => {
             }
         });
 
-        socket.leaveAll();
+        socket.leave(r.room);
 
         let clients = io.sockets.adapter.rooms[r.room].sockets;
 
         let names = [];
         for (let clientId in clients) {
-            //this is the socket of each client in the room.
-            let clientSocket = io.sockets.connected[clientId];
             listOfSocketNames.forEach(name => {
                 if (clientId === name.id) {
                     names.push(name.name);
