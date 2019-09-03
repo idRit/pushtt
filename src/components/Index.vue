@@ -36,11 +36,12 @@
 
     <div class="pushContainer">
       <button
-        id="pushBtn"
+        id="pushBtn1"
         class="pushBtn"
         v-long-press="300"
         @long-press-start="onLongPressStart"
         @long-press-stop="onLongPressStop"
+        disabled
       >
         <i class="fa fa-microphone"></i>
       </button>
@@ -131,6 +132,7 @@ export default {
         });
         document.querySelector(".roomContainer").style.display = "none";
         document.querySelector(".usersContainer").style.display = "flex";
+        document.querySelector('#pushBtn1').disabled = false;
       }
     },
     exit(event) {
@@ -139,6 +141,7 @@ export default {
       });
       document.querySelector(".roomContainer").style.display = "flex";
       document.querySelector(".usersContainer").style.display = "none";
+      document.querySelector('#pushBtn1').disabled = true;
     }
   },
   async created() {
