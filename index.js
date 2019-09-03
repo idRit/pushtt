@@ -34,6 +34,7 @@ io.on('connection', (socket) => {
 
     socket.on('#msg', (msg) => {
         console.log(msg.msg);
+        console.log(msg.room);
         io.sockets.in(msg.room).emit(msg.msg);
     });
 
