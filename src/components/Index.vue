@@ -112,7 +112,6 @@ export default {
         alert("something's missing, be sure to fill the stuff!");
       } else {
         this.roomName = details.roomName;
-        this.socket.name = this.name;
         this.$socket.emit("create", this.roomName);
         document.querySelector(".roomContainer").style.display = "none";
         document.querySelector(".usersContainer").style.display = "block";
