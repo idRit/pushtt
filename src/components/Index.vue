@@ -67,7 +67,7 @@ export default {
       this.usersInRoom = data;
       console.log(data);
     },
-    msg: function(data) {
+    i: function(data) {
       console.log(data);
       let audio = document.querySelector("#playback");
       audio.src = data;
