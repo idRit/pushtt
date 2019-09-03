@@ -32,14 +32,14 @@ io.on('connection', (socket) => {
         console.log(room);
     });    
 
-    socket.on('msg', (msg) => {
+    socket.on('#msg', (msg) => {
         console.log(msg.msg);
         io.sockets.in(msg.room).emit(msg.msg);
     });
 
     socket.on('getUsers', (roomName) => {
         io.of('/').in(roomName).clients((err, data) => {
-            io.emit('users', data);
+            io.emit('#users', data);
         });
     })
 
