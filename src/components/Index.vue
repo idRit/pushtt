@@ -57,7 +57,6 @@ export default {
       recorder: null,
       stream: null,
       url: "11",
-      socket: socket,
       name: localStorage.name,
       roomName: "",
       usersInRoom: ["someone 1", "someone 2"]
