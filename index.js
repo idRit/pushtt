@@ -21,22 +21,27 @@ const server = app.listen(process.env.PORT || 8080);
 
 const io = require('socket.io')(server);
 
+let listOfSocketNames = [];
+
 io.on('connection', (socket) => {
     console.log('someone connected');
 
     socket.on('create', (room) => {
         socket.join(room.roomName);
+        listOfSocketNames.push({
+            name: room.call,
+            id: socket.id
+        });
 
         var clients = io.sockets.adapter.rooms[room.roomName].sockets;
-
-        //to get the number of clients
-        //let numClients = (typeof clients !== 'undefined') ? Object.keys(clients).length : 0;
     
         let names = [];
         for (let clientId in clients) {
             //this is the socket of each client in the room.
             let clientSocket = io.sockets.connected[clientId];
-            names.push(clientSocket.nickname);
+            if (clientId === listOfSocketNames.id) {
+                names.push(listOfSocketNames.name);
+            }
         }
         console.log(names);
 
