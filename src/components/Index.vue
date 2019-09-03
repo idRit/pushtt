@@ -66,6 +66,11 @@ export default {
     users: function(data) {
       this.usersInRoom = data;
       console.log(data);
+    },
+    msg: function(data) {
+      let audio = document.querySelector("#playback");
+      audio.src = data;
+      audio.play();
     }
   },
   methods: {
@@ -84,7 +89,7 @@ export default {
           //do stuff here
           //that.socket.broadcast(this.roomName).emit("msg", url);
           console.log(that.socket);
-          that.socket.emit("msg", {
+          that.$socket.emit("msg", {
             room: that.roomName,
             msg: url
           });
@@ -108,7 +113,7 @@ export default {
       } else {
         this.roomName = details.roomName;
         this.socket.name = this.name;
-        this.socket.emit("create", this.roomName);
+        this.$socket.emit("create", this.roomName);
         document.querySelector(".roomContainer").style.display = "none";
         document.querySelector(".usersContainer").style.display = "block";
       }
@@ -128,12 +133,6 @@ export default {
     this.recorder = recorder;
   }
 };
-
-socket.on("msg", msg => {
-  let audio = document.querySelector("#playback");
-  audio.src = msg;
-  audio.play();
-});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
