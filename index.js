@@ -63,6 +63,8 @@ io.on('connection', (socket) => {
             }
         });
 
+        socket.leaveAll();
+
         let clients = io.sockets.adapter.rooms[r.roomName].sockets;
 
         let names = [];
@@ -84,6 +86,6 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         console.log('someone disconnected');
-        
+
     });
 });
