@@ -64,7 +64,7 @@ io.on('connection', (socket) => {
                 listOfSocketNames.splice(i, 1);
             }
         });
-        let room = socket.rooms;
+        let room = Object.keys(io.sockets.adapter.sids[socket.id]).filter(item => item!=socket.id);
         let clients = io.sockets.adapter.rooms[room].sockets;
     
         let names = [];
