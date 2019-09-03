@@ -19,6 +19,8 @@ app.get('*', function (req, res) {
 
 const server = app.listen(process.env.PORT || 8080);
 
+console.log('server started');
+
 const io = require('socket.io')(server);
 
 let listOfSocketNames = [];
@@ -33,7 +35,7 @@ io.on('connection', (socket) => {
             id: socket.id
         });
 
-        var clients = io.sockets.adapter.rooms[room.roomName].sockets;
+        let clients = io.sockets.adapter.rooms[room.roomName].sockets;
     
         let names = [];
         for (let clientId in clients) {
@@ -54,7 +56,29 @@ io.on('connection', (socket) => {
         io.sockets.in(msg.room).emit('msg', msg.msg);
     });
 
+
     socket.on('disconnect', () => {
         console.log('someone disconnected');
+        listOfSocketNames.forEach((el ,i) => {
+            if (socket.id === el.id) {
+                listOfSocketNames.splice(i, 1);
+            }
+        });
+        let room = socket.rooms;
+        let clients = io.sockets.adapter.rooms[room].sockets;
+    
+        let names = [];
+        for (let clientId in clients) {
+            //this is the socket of each client in the room.
+            let clientSocket = io.sockets.connected[clientId];
+            listOfSocketNames.forEach(name => {
+                if (clientId === name.id) {
+                    names.push(name.name);
+                }
+            })
+        }
+        if (names.length !== 0) {
+            io.sockets.in(room.roomName).emit('p', names);
+        }
     });
 });
