@@ -23,6 +23,13 @@
       <ul id="example-1">
         <li v-for="user in usersInRoom" :key="user">{{ user }}</li>
       </ul>
+      <button
+        id="pushBtn"
+        class="pushBtn"
+        style="font-size: 1em; width: 70px; margin-top: 20px; height: 45px; background-color: #99d8d0; color: #70416d; "
+        v-on:click="exit">
+          Leave
+      </button>
     </div>
 
     <div class="pushContainer">
@@ -124,11 +131,12 @@ export default {
         document.querySelector(".usersContainer").style.display = "block";
       }
     },
-    handler: function handler(event) {
-      alert('exiting');
+    exit(event) {
       this.$socket.emit("exit", {
         room: this.roomName
       });
+      document.querySelector(".roomContainer").style.display = "block";
+      document.querySelector(".usersContainer").style.display = "none";
     }
   },
   async created() {
@@ -142,7 +150,6 @@ export default {
       mimeType: "audio/webm"
     });
     this.recorder = recorder;
-    document.addEventListener("beforeunload", this.handler);
   }
 };
 </script>
