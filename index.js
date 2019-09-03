@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
     socket.on('create', (room) => {
         socket.join(room.roomName);
 
-        var roster = io.sockets.clients(room);
+        var roster = io.sockets.clients(room.roomName);
         let x = [];
 
         roster.forEach(function (client) {
