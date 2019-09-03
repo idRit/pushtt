@@ -40,6 +40,7 @@ io.on('connection', (socket) => {
 
     socket.on('getUsers', (roomName) => {
         io.of('/').in(roomName).clients((err, data) => {
+            console.log(data);
             io.emit('users', data);
         });
     })
