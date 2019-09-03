@@ -3,6 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './registerServiceWorker'
+import VueSocketIO from 'vue-socket.io'
+
+Vue.use(VueSocketIO, location.protocol +
+  "//" +
+  location.hostname +
+  (location.port ? ":" + location.port : "8080"));
 
 Vue.config.productionTip = false
 

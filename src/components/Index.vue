@@ -5,10 +5,24 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <audio id="playback" src></audio>
-    <p id="message"></p>
+    <h3 id="callsign">{{name}}</h3>
 
     <div class="roomContainer">
-      <input type="text" name id="room" placeholder="Enter Room name or create one!" />
+      <input class="room" type="text" name id="roomName" placeholder="Room name" />
+      <button
+        id="pushBtn"
+        class="pushBtn"
+        style="font-size: 1em; width: 70px; margin-top: 20px; height: 45px; background-color: #99d8d0; color: #70416d; "
+        v-on:click="passData"
+      >
+        <i class="fa fa-save"></i>
+      </button>
+    </div>
+
+    <div class="usersContainer">
+      <ul id="example-1">
+        <li v-for="user in usersInRoom" :key="user">{{ user }}</li>
+      </ul>
     </div>
 
     <div class="pushContainer">
@@ -42,8 +56,18 @@ export default {
     return {
       recorder: null,
       stream: null,
-      url: "11"
+      url: "11",
+      socket: socket,
+      name: localStorage.name,
+      roomName: "",
+      usersInRoom: ["someone 1", "someone 2"]
     };
+  },
+  sockets: {
+    users: function(data) {
+      this.usersInRoom = data;
+      console.log(data);
+    }
   },
   methods: {
     onLongPressStart() {
@@ -59,13 +83,36 @@ export default {
       setTimeout(async function() {
         await that.recorder.getDataURL(async url => {
           //do stuff here
-
-          let audio = document.querySelector("#playback");
-          audio.src = url;
-          audio.play();
+          //that.socket.broadcast(this.roomName).emit("msg", url);
+          console.log(that.socket);
+          that.socket.emit("msg", {
+            room: that.roomName,
+            msg: url
+          });
+          //that.socket.broadcast.emit(url);
+          //socket.in(this.roomName).broadcast.emit("msg", url);
         });
       }, 50);
-      msg.innerHTML = "";
+      //msg.innerHTML = "";
+    },
+    passData(event) {
+      console.log("something");
+      let details = {
+        roomName: document.querySelector("#roomName").value
+      };
+
+      if (
+        details.roomName === null ||
+        typeof details.roomName === "undefined"
+      ) {
+        alert("something's missing, be sure to fill the stuff!");
+      } else {
+        this.roomName = details.roomName;
+        this.socket.name = this.name;
+        this.socket.emit("create", this.roomName);
+        document.querySelector(".roomContainer").style.display = "none";
+        document.querySelector(".usersContainer").style.display = "block";
+      }
     }
   },
   async created() {
@@ -82,6 +129,12 @@ export default {
     this.recorder = recorder;
   }
 };
+
+socket.on("msg", msg => {
+  let audio = document.querySelector("#playback");
+  audio.src = msg;
+  audio.play();
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -154,7 +207,7 @@ export default {
   justify-content: center;
   flex-direction: column;
 }
-#room {
+.room {
   padding: 20px;
   width: 25%;
   margin-top: 20px;
@@ -166,12 +219,15 @@ export default {
   text-align: center;
   border-radius: 30px;
 }
+.usersContainer {
+  display: none;
+}
 
 @media only screen and (max-width: 480px) {
   #container {
     height: 80vh;
   }
-  #room {
+  .room {
     width: 75%;
   }
 }
