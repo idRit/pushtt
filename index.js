@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
 
         socket.leaveAll();
 
-        let clients = io.sockets.adapter.rooms[r.roomName].sockets;
+        let clients = io.sockets.adapter.rooms[r.room].sockets;
 
         let names = [];
         for (let clientId in clients) {
@@ -80,7 +80,7 @@ io.on('connection', (socket) => {
         console.log(names);
 
         if (names.length !== 0){
-            io.sockets.in(r.roomName).emit('p', names);        
+            io.sockets.in(r.room).emit('p', names);        
         }
     });
 
