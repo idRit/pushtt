@@ -31,12 +31,12 @@ io.on('connection', (socket) => {
 
         //to get the number of clients
         //let numClients = (typeof clients !== 'undefined') ? Object.keys(clients).length : 0;
-
+    
         let names = [];
         for (let clientId in clients) {
             //this is the socket of each client in the room.
             let clientSocket = io.sockets.connected[clientId];
-            names.push(clientSocket.name);
+            names.push(clientSocket);
         }
         console.log(names);
 

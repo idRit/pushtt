@@ -115,7 +115,6 @@ export default {
         alert("something's missing, be sure to fill the stuff!");
       } else {
         this.roomName = details.roomName;
-        this.$socket.name = localStorage.name;
         this.$socket.emit("create", {roomName: this.roomName, call: localStorage.name});
         document.querySelector(".roomContainer").style.display = "none";
         document.querySelector(".usersContainer").style.display = "block";
@@ -132,7 +131,6 @@ export default {
       type: "audio",
       mimeType: "audio/webm"
     });
-
     this.recorder = recorder;
   }
 };
