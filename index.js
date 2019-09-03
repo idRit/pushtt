@@ -30,9 +30,11 @@ io.on('connection', (socket) => {
         var roster = io.sockets.clients(room.roomName);
         let x = [];
 
-        roster.forEach(function (client) {
-            x.push(client.name);
-        });
+        console.log("roster: " + roster);
+
+        // roster.forEach(function (client) {
+        //     x.push(client.name);
+        // });
 
         io.sockets.in(room.roomName).emit('p', x);
     });
