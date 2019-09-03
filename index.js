@@ -58,36 +58,27 @@ io.on('connection', (socket) => {
     });
 
     socket.on('exit', (r) => {
-        let roomName = 0;
         listOfSocketNames.forEach((el, i) => {
             if (socket.id === el.id) {
                 listOfSocketNames.splice(i, 1);
             }
         });
 
+        let clients = io.sockets.adapter.rooms[r.room].sockets;
         socket.leave(r.room);
 
-        listOfSocketNames.forEach((el, i) => {
-            if (el.room === r.room) {
-                roomName++;
-            }
-        });
-
-        if (roomName > 1) {
-            let clients = io.sockets.adapter.rooms[r.room].sockets;
-
-            let names = [];
-            for (let clientId in clients) {
-                listOfSocketNames.forEach(name => {
-                    if (clientId === name.id) {
-                        names.push(name.name);
-                    }
-                })
-            }
-            console.log(names);
-
-            io.sockets.in(r.room).emit('p', names);
+        let names = [];
+        for (let clientId in clients) {
+            listOfSocketNames.forEach(name => {
+                if (clientId === name.id) {
+                    names.push(name.name);
+                }
+            })
         }
+        console.log(names);
+
+        io.sockets.in(r.room).emit('p', names);
+
     });
 
     socket.on('disconnect', () => {
