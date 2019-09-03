@@ -26,9 +26,16 @@ io.on('connection', (socket) => {
 
     socket.on('create', (room) => {
         socket.join(room.roomName);
-        io.sockets.in(room.roomName).emit('p', room);
-    
-    });    
+
+        var roster = io.sockets.clients(room);
+        let x = [];
+
+        roster.forEach(function (client) {
+            x.push(client.name);
+        });
+
+        io.sockets.in(room.roomName).emit('p', x);
+    });
 
     socket.on('msg', (msg) => {
         io.sockets.in(msg.room).emit('msg', msg.msg);
