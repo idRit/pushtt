@@ -90,7 +90,7 @@ export default {
           //do stuff here
           //that.socket.broadcast(this.roomName).emit("msg", url);
           console.log(that.$socket);
-          that.$socket.emit("msg", {
+          that.$socket.emit("#msg", {
             room: that.roomName,
             msg: url
           });
