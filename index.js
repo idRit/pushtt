@@ -20,36 +20,14 @@ app.get('*', function (req, res) {
 const server = app.listen(process.env.PORT || 8080);
 
 const io = require('socket.io')(server);
-let rooms = [];
 
 io.on('connection', (socket) => {
     console.log('someone connected');
 
     socket.on('create', (room) => {
         socket.join(room.roomName);
-        let pres = false;
-        rooms.forEach(roomObject => {
-            if (roomObject.name === room.roomName) {
-                pres = true;    
-            }
-        });
-        if (!pres) {
-            let roomObject = {
-                name: room.roomName,
-                participants: [room.call]
-            }
-            rooms.push(roomObject);
-        } else {
-            let p;
-            rooms.forEach(roomObject => {
-                if (roomObject.name === room.roomName) {
-                    p = roomObject.participants;
-                    p.push(room.call);    
-                }
-            });
-            rooms.push(p);
-        }
-        io.sockets.in(roomObject.name).emit('p', roomObject.participants);
+        io.sockets.in(room.roomName).emit('p', room);
+    
     });    
 
     socket.on('msg', (msg) => {
