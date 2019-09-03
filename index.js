@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
         });
 
         let clients = io.sockets.adapter.rooms[room.roomName].sockets;
-    
+
         let names = [];
         for (let clientId in clients) {
             //this is the socket of each client in the room.
@@ -56,18 +56,15 @@ io.on('connection', (socket) => {
         io.sockets.in(msg.room).emit('msg', msg.msg);
     });
 
-
-    socket.on('disconnect', () => {
-        console.log('someone disconnected');
-        listOfSocketNames.forEach((el ,i) => {
+    socket.on('exit', (r) => {
+        listOfSocketNames.forEach((el, i) => {
             if (socket.id === el.id) {
                 listOfSocketNames.splice(i, 1);
             }
         });
-        let room = io.sockets.sockets[socket.id].rooms;
-        console.log(room);
-        let clients = io.sockets.adapter.rooms[room].sockets;
-    
+
+        let clients = io.sockets.adapter.rooms[r.roomName].sockets;
+
         let names = [];
         for (let clientId in clients) {
             //this is the socket of each client in the room.
@@ -78,8 +75,12 @@ io.on('connection', (socket) => {
                 }
             })
         }
-        if (names.length !== 0) {
-            io.sockets.in(room.roomName).emit('p', names);
-        }
+        console.log(names);
+
+        io.sockets.in(r.roomName).emit('p', names);        
+    });
+
+    socket.on('disconnect', () => {
+        console.log('someone disconnected');
     });
 });

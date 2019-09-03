@@ -73,7 +73,7 @@ export default {
       if (this.url !== data) {
         audio.src = data;
         audio.play();
-      } 
+      }
     }
   },
   methods: {
@@ -116,10 +116,18 @@ export default {
       } else {
         this.roomName = details.roomName;
         this.$socket.nickname = localStorage.name;
-        this.$socket.emit("create", {roomName: this.roomName, call: localStorage.name});
+        this.$socket.emit("create", {
+          roomName: this.roomName,
+          call: localStorage.name
+        });
         document.querySelector(".roomContainer").style.display = "none";
         document.querySelector(".usersContainer").style.display = "block";
       }
+    },
+    handler: function handler(event) {
+      this.$socket.emit("exit", {
+        room: this.roomName
+      });
     }
   },
   async created() {
@@ -133,6 +141,7 @@ export default {
       mimeType: "audio/webm"
     });
     this.recorder = recorder;
+    document.addEventListener("beforeunload", this.handler);
   }
 };
 </script>
