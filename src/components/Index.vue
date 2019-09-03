@@ -125,6 +125,7 @@ export default {
       }
     },
     handler: function handler(event) {
+      alert('exiting');
       this.$socket.emit("exit", {
         room: this.roomName
       });
