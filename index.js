@@ -77,7 +77,9 @@ io.on('connection', (socket) => {
         }
         console.log(names);
 
-        io.sockets.in(r.roomName).emit('p', names);        
+        if (names.length !== 0){
+            io.sockets.in(r.roomName).emit('p', names);        
+        }
     });
 
     socket.on('disconnect', () => {
