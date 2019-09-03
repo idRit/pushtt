@@ -26,24 +26,35 @@ io.on('connection', (socket) => {
     console.log('someone connected');
 
     socket.on('create', (room) => {
-        socket.join(room);
-        rooms.push(room);
-        io.emit('getUsers', room);
-        console.log(room);
+        socket.join(room.roomName);
+        let pres = false;
+        rooms.forEach(roomObject => {
+            if (roomObject.name === room.roomName) {
+                pres = true;    
+            }
+        });
+        if (!pres) {
+            let roomObject = {
+                name: room.roomName,
+                participants: [room.call]
+            }
+            rooms.push(roomObject);
+        } else {
+            let p;
+            rooms.forEach(roomObject => {
+                if (roomObject.name === room.roomName) {
+                    p = roomObject.participants;
+                    p.push(room.call);    
+                }
+            });
+            rooms.push(p);
+        }
+        io.sockets.in(roomObject.name).emit('p', roomObject.participants);
     });    
 
     socket.on('msg', (msg) => {
-        console.log(msg.msg);
-        console.log(msg.room);
         io.sockets.in(msg.room).emit('msg', msg.msg);
     });
-
-    socket.on('getUsers', (roomName) => {
-        io.of('/').in(roomName).clients((err, data) => {
-            console.log(data);
-            io.emit('users', data);
-        });
-    })
 
     socket.on('disconnect', () => {
         console.log('someone disconnected');

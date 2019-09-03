@@ -63,7 +63,7 @@ export default {
     };
   },
   sockets: {
-    users: function(data) {
+    p: function(data) {
       this.usersInRoom = data;
       console.log(data);
     },
@@ -104,7 +104,6 @@ export default {
       //msg.innerHTML = "";
     },
     passData(event) {
-      console.log("something");
       let details = {
         roomName: document.querySelector("#roomName").value
       };
@@ -116,7 +115,7 @@ export default {
         alert("something's missing, be sure to fill the stuff!");
       } else {
         this.roomName = details.roomName;
-        this.$socket.emit("create", this.roomName);
+        this.$socket.emit("create", {roomName: this.roomName, call: localStorage.name});
         document.querySelector(".roomContainer").style.display = "none";
         document.querySelector(".usersContainer").style.display = "block";
       }
