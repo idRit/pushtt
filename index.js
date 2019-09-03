@@ -27,16 +27,19 @@ io.on('connection', (socket) => {
     socket.on('create', (room) => {
         socket.join(room.roomName);
 
-        var roster = io.sockets.clients(room.roomName);
-        let x = [];
+        var clients = io.sockets.adapter.rooms[room.roomName].sockets;
 
-        console.log("roster: " + roster.toString());
+        //to get the number of clients
+        //let numClients = (typeof clients !== 'undefined') ? Object.keys(clients).length : 0;
 
-        // roster.forEach(function (client) {
-        //     x.push(client.name);
-        // });
+        let names = [];
+        for (let clientId in clients) {
+            //this is the socket of each client in the room.
+            let clientSocket = io.sockets.connected[clientId];
+            names.push(clientSocket.name);
+        }
 
-        io.sockets.in(room.roomName).emit('p', x);
+        io.sockets.in(room.roomName).emit('p', names);
     });
 
     socket.on('msg', (msg) => {
