@@ -68,6 +68,7 @@ export default {
       console.log(data);
     },
     msg: function(data) {
+      console.log(data);
       let audio = document.querySelector("#playback");
       audio.src = data;
       audio.play();
