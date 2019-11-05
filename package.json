@@ -13,7 +13,7 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "lowdb": "^1.0.0",
-    "mongoose": "^5.6.11",
+    "mongoose": "^5.7.5",
     "node-audiorecorder": "^1.4.1",
     "recordrtc": "^5.5.8",
     "register-service-worker": "^1.6.2",
